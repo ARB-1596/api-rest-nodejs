@@ -30,6 +30,16 @@ app.get('/students', (req, res) => {
   });
 });
 
+// GET - Obtener un estudiante por ID
+app.get('/students/:id', (req, res) => {
+  const { id } = req.params;
+  db.get('SELECT * FROM students WHERE id = ?', [id], (err, row) => {
+    if (err) return res.status(500).json({ error: err.message });
+    if (!row) return res.status(404).json({ error: 'Estudiante no encontrado' });
+    res.json(row);
+  });
+});
+
 // Ruta POST - crear un nuevo estudiante
 app.post('/students', (req, res) => {
   const { firstname, lastname, gender, age } = req.body;
